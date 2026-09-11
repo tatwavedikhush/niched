@@ -1,0 +1,118 @@
+.app {
+  min-height: 100vh;
+  background: #f7f6f2;
+  color: #171717;
+}
+
+.container {
+  width: min(1100px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 120px 0;
+}
+
+.eyebrow {
+  margin: 0 0 28px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #77736c;
+}
+
+h1 {
+  max-width: 800px;
+  margin: 0;
+  font-size: clamp(52px, 7vw, 92px);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+  font-weight: 600;
+}
+
+.subtitle {
+  max-width: 520px;
+  margin: 32px 0 48px;
+  color: #6f6c66;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.research-box {
+  display: flex;
+  width: min(720px, 100%);
+  padding: 6px;
+  background: #ffffff;
+  border: 1px solid #dedbd4;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(23, 23, 23, 0.04);
+}
+
+.research-box input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  padding: 18px 20px;
+  background: transparent;
+  color: #171717;
+  font: inherit;
+  font-size: 15px;
+}
+
+.research-box input::placeholder {
+  color: #aaa69e;
+}
+
+.research-box button {
+  border: 0;
+  padding: 0 22px;
+  border-radius: 7px;
+  background: #c65d3a;
+  color: #ffffff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 150ms ease, background 150ms ease;
+}
+
+.research-box button:hover {
+  background: #ad4f31;
+}
+
+.research-box button span {
+  margin-left: 8px;
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: min(100% - 32px, 1100px);
+    padding: 72px 0;
+  }
+
+  .eyebrow {
+    margin-bottom: 22px;
+    font-size: 11px;
+  }
+
+  h1 {
+    font-size: clamp(44px, 14vw, 64px);
+    letter-spacing: -0.05em;
+  }
+
+  .subtitle {
+    margin: 24px 0 32px;
+    font-size: 16px;
+  }
+
+  .research-box {
+    flex-direction: column;
+    padding: 5px;
+  }
+
+  .research-box input {
+    padding: 16px;
+  }
+
+  .research-box button {
+    min-height: 50px;
+  }
+}

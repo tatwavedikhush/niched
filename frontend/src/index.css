@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "DM Sans", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --color-paper: #f7f6f2;
+  --color-ink: #181818;
+  --color-muted: #77726a;
+  --color-accent: #c65d3a;
+  --color-accent-dark: #ad4f31;
+  --color-border: #e1ddd5;
+  --color-surface: #ffffff;
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
