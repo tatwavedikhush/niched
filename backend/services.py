@@ -100,34 +100,24 @@ async def research_seed(seed: str):
 
 async def run_research(job_id, seed):
     try:
-        # Collecting research
         research = await research_seed(seed)
 
-        # Analyzing research with Gemini
         analysis = await asyncio.to_thread(analyze_research, research)
 
-        # Combining raw research + AI analysis
         result = {**research, "analysis": analysis.model_dump()}
 
-        # Saving everything
         db = SessionLocal()
-
         job = db.query(ResearchJob).filter(ResearchJob.id == job_id).first()
-
         job.status = "completed"
         job.result = result
-
         db.commit()
         db.close()
 
     except Exception as e:
         db = SessionLocal()
-
         job = db.query(ResearchJob).filter(ResearchJob.id == job_id).first()
-
         job.status = "failed"
         job.error = str(e)
-
         db.commit()
         db.close()
 
