@@ -1,3 +1,4 @@
+from pathlib import Path
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 from reportlab.lib.pagesizes import A4
@@ -11,6 +12,7 @@ from reportlab.platypus import (
     TableStyle,
     PageBreak,
 )
+from xml.sax.saxutils import escape
 
 PAPER = colors.HexColor("#F7F6F2")
 INK = colors.HexColor("#181818")
@@ -86,14 +88,15 @@ def get_styles():
     }
 
 
-from xml.sax.saxutils import escape
-
+GENERATED_DIR = Path(__file__).parent / "generated"
+GENERATED_DIR.mkdir(exist_ok=True)
 
 def create_pdf(product, filename):
     styles = get_styles()
+    file_path = GENERATED_DIR / filename
 
     doc = SimpleDocTemplate(
-        filename,
+        str(file_path),
         pagesize=A4,
         rightMargin=22 * mm,
         leftMargin=22 * mm,

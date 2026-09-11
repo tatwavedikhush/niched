@@ -7,6 +7,7 @@ from services import run_research
 import uuid
 from product_generator import generate_product
 from pdf_generator import create_pdf
+from pathlib import Path
 
 app = FastAPI()
 app.add_middleware(
@@ -16,6 +17,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/")
 def home():
@@ -66,24 +68,33 @@ def get_research(job_id: str):
 
 @app.post("/products")
 def create_product(opportunity: ProductOpportunity):
-    product = generate_product(opportunity)
+    try:
+        product = generate_product(opportunity)
 
-    filename = f"{product.title.replace(' ', '_')}.pdf"
+        filename = f"{product.title.replace(' ', '_')}.pdf"
 
-    create_pdf(product, filename)
+        create_pdf(product, filename)
 
-    return {
-        "title": product.title,
-        "filename": filename,
-        "product": product.model_dump(),
-    }
+        return {
+            "title": product.title,
+            "filename": filename,
+            "product": product.model_dump(),
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Product generation failed: {str(e)}"
+        )
+
 
 @app.get("/products/download/{filename}")
 def download_product(filename: str):
-    file_path = f"./{filename}"
+    if Path(filename).name != filename:
+        raise HTTPException(status_code=400, detail="Invalid filename")
 
-    return FileResponse(
-        path=file_path,
-        media_type="application/pdf",
-        filename=filename
-    )
+    file_path = Path(__file__).parent / "generated" / filename
+
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="Product PDF not found")
+
+    return FileResponse(path=file_path, media_type="application/pdf", filename=filename)
