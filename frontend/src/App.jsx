@@ -8,10 +8,11 @@ function App() {
   const [product, setProduct] = useState(null)
   const [generatedFor, setGeneratedFor] = useState(null)
   const [showProduct, setShowProduct] = useState(false)
+  const [error, setError] = useState("")
 
   const handleResearch = async () => {
     if (!seed.trim()) return
-
+    setError("")
     setLoading(true)
     setResearch(null)
 
@@ -53,6 +54,7 @@ function App() {
       setResearch(result)
     } catch (error) {
       console.error(error)
+      setError(error.message || "Something went wrong. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -115,7 +117,6 @@ function App() {
 
           </div>
         </header>
-
 
         {/* PRODUCT */}
         <main className="mx-auto max-w-3xl px-5 pb-24 pt-16">
@@ -609,7 +610,11 @@ function App() {
             </button>
 
           </div>
-
+          {error && (
+            <div className="mt-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 shadow-sm">
+              {error}
+            </div>
+          )}
           <p className="mt-2 text-center text-[10px] tracking-wide text-muted/70">
             Reddit signals · Google Trends · AI analysis
           </p>
