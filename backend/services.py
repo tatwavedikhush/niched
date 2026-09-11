@@ -3,6 +3,7 @@ from models import ResearchJob, ResearchAnalysis
 from database import SessionLocal
 from pytrends.request import TrendReq
 import feedparser
+import os
 from urllib.parse import quote_plus
 
 # from google import genai
@@ -80,8 +81,11 @@ def analyze_research(research):
       ]
     }}
     """
+    ollama_client = ollama.Client(
+        host=os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
+    )
 
-    response = ollama.chat(
+    response = ollama_client.chat(
         model="llama3.1:8b",
         messages=[{"role": "user", "content": prompt}],
         format=ResearchAnalysis.model_json_schema(),

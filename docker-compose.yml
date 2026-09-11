@@ -16,10 +16,20 @@ services:
     container_name: niched-backend
     environment:
       DATABASE_URL: postgresql+psycopg://niched:niched@postgres:5432/niched
+      OLLAMA_HOST: http://host.docker.internal:11434
     ports:
       - "8000:8000"
     depends_on:
       - postgres
-
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  frontend:
+    build: ./frontend
+    container_name: niched-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
 volumes:
   postgres_data:
+
