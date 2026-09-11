@@ -107,11 +107,34 @@ async def run_research(job_id, seed):
         result = {**research, "analysis": analysis.model_dump()}
 
         db = SessionLocal()
-        job = db.query(ResearchJob).filter(ResearchJob.id == job_id).first()
-        job.status = "completed"
-        job.result = result
-        db.commit()
-        db.close()
+
+        try:
+            job = db.query(ResearchJob).filter(ResearchJob.id == job_id).first()
+
+            if not job:
+                raise ValueError(f"Research job {job_id} not found")
+
+            job.status = "completed"
+            job.result = result
+
+            db.commit()
+
+        finally:
+            db.close()
+
+    except Exception as e:
+        db = SessionLocal()
+
+        try:
+            job = db.query(ResearchJob).filter(ResearchJob.id == job_id).first()
+
+            if job:
+                job.status = "failed"
+                job.error = str(e)
+                db.commit()
+
+        finally:
+            db.close()
 
     except Exception as e:
         db = SessionLocal()

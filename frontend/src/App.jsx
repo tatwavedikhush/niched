@@ -9,6 +9,7 @@ function App() {
   const [generatedFor, setGeneratedFor] = useState(null)
   const [showProduct, setShowProduct] = useState(false)
   const [error, setError] = useState("")
+  const [productError, setProductError] = useState("")
 
   const handleResearch = async () => {
     if (!seed.trim()) return
@@ -61,6 +62,7 @@ function App() {
   }
 
   const handleGenerateProduct = async (opportunity) => {
+    setProductError("")
     setGenerating(true)
     setProduct(null)
     setGeneratedFor(opportunity.title)
@@ -83,6 +85,8 @@ function App() {
       setProduct(data)
     } catch (error) {
       console.error(error)
+      setProductError(error.message || "Failed to generate product. Please try again.")
+
     } finally {
       setGenerating(false)
     }
@@ -462,6 +466,11 @@ function App() {
 
             </div>
 
+            {productError && (
+              <div className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {productError}
+              </div>
+            )}
 
             {/* OPPORTUNITIES */}
             <div>
