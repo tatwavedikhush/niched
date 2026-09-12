@@ -1,4 +1,4 @@
-from fastapi import FastAPI, BackgroundTasks, HTTPException
+from fastapi import FastAPI, BackgroundTasks, HTTPException, WebSocket
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from models import ResearchRequest, ResearchJob, ProductOpportunity
@@ -8,6 +8,7 @@ import uuid
 from product_generator import generate_product
 from pdf_generator import create_pdf
 from pathlib import Path
+import asyncio
 
 app = FastAPI()
 app.add_middleware(
@@ -98,3 +99,16 @@ def download_product(filename: str):
         raise HTTPException(status_code=404, detail="Product PDF not found")
 
     return FileResponse(path=file_path, media_type="application/pdf", filename=filename)
+
+
+@app.websocket("/ws/research/{job_id}")
+async def research_websocket(websocket: WebSocket, job_id: str):
+    await websocket.accept()
+
+    await websocket.send_json({
+        "job_id": job_id,
+        "status": "connected"
+    })
+
+    while True:
+        await asyncio.sleep(60)
