@@ -7,3 +7,4 @@ ollama
 pytrends
 feedparser
 reportlab
+pytest
