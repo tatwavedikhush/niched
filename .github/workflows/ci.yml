@@ -22,9 +22,9 @@ jobs:
 
     - name: Check backend imports
       run: python -c "import sys; sys.path.insert(0, 'backend'); import main"
-      
+
     - name: Run backend tests
-      run: pytest tests
+      run: PYTHONPATH=. pytest tests
       working-directory: backend
 
     - name: Build backend Docker image
